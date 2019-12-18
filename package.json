@@ -1,7 +1,7 @@
 {
-  "name": "sample-github-api-consumer-nodejs",
+  "name": "ezweb",
   "version": "0.0.1",
-  "description": "Sample GitHub v4 API (GraphQL) Consumer Application with Node.js",
+  "description": "The EzWeb API with Node.js",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -9,18 +9,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/furknyavuz/sample-github-api-consumer-nodejs.git"
+    "url": "git+https://github.com/han-tech/ez-web.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/furknyavuz/sample-github-api-consumer-nodejs/issues"
+    "url": "https://github.com/han-tech/ez-web/issues"
   },
-  "homepage": "https://github.com/furknyavuz/sample-github-api-consumer-nodejs#readme",
+  "homepage": "https://github.com/han-tech/ez-web.git#readme",
   "dependencies": {
-    "axios": "^0.18.1",
     "body-parser": "1.7.0",
-    "cron": "^1.7.2",
     "express": "^4.8.7",
     "moment": "^2.17.1",
     "moment-timezone": "^0.5.13",

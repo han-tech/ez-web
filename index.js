@@ -3,7 +3,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 const Router = require('./config/routes.config');
-const CronController = require('./controller/cron.controller');
 
 const app = express();
 
@@ -22,7 +21,6 @@ app.use(function (req, res, next) {
 
 app.use(bodyParser.json());
 Router.routesConfig(app);
-CronController.startCronJobs();
 
 app.listen(config.port, function () {
     console.log('app listening at port %s', config.port);

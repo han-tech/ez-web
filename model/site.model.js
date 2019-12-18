@@ -7,35 +7,30 @@ Mongoose.connect(MONGODB_URI, {useNewUrlParser: true});
 
 const Schema = Mongoose.Schema;
 
-const repositorySchema = new Schema({
-    owner: String,
+const siteSchema = new Schema({
     name: String,
-    createdAt: String,
-    resourcePath: String,
-    tagName: String,
-    releaseDescription: String,
-    homepageUrl: String,
-    repositoryDescription: String,
-    avatarUrl: String
+    siteUrl: String,
+    createdAt: { type: Date, default: Date.now},
+    modifiedAt: { type: Date, default: Date.now},
 });
 
-repositorySchema.virtual('id').get(function () {
+siteSchema.virtual('id').get(function () {
     return this._id.toHexString();
 });
 
 // Ensure virtual fields are serialised.
-repositorySchema.set('toJSON', {
+siteSchema.set('toJSON', {
     virtuals: true
 });
 
-repositorySchema.findById = function (cb) {
-    return this.model('Repository').find({id: this.id}, cb);
+siteSchema.findById = function (cb) {
+    return this.model('Site').find({id: this.id}, cb);
 };
 
-const Repository = Mongoose.model('repository', repositorySchema);
+const Site = Mongoose.model('site', siteSchema);
 
 exports.findById = (id) => {
-    return Repository.findById(id)
+    return Site.findById(id)
         .then((result) => {
             if(result) {
                 result = result.toJSON();
@@ -46,14 +41,14 @@ exports.findById = (id) => {
         });
 };
 
-exports.create = (repositoryData) => {
-    const repository = new Repository(repositoryData);
-    return repository.save();
+exports.create = (siteData) => {
+    const site = new Site(siteData);
+    return site.save();
 };
 
 exports.list = () => {
     return new Promise((resolve, reject) => {
-        Repository.find()
+        Site.find()
             .exec(function (err, users) {
                 if (err) {
                     reject(err);
@@ -64,16 +59,16 @@ exports.list = () => {
     });
 };
 
-exports.patchById = (id, repositoryData) => {
+exports.patchById = (id, siteData) => {
     return new Promise((resolve, reject) => {
-        Repository.findById(id, function (err, repository) {
+        Site.findById(id, function (err, site) {
             if (err) reject(err);
-            for (let i in repositoryData) {
-                repository[i] = repositoryData[i];
+            for (let i in siteData) {
+                site[i] = siteData[i];
             }
-            repository.save(function (err, updatedRepository) {
+            site.save(function (err, updatedSite) {
                 if (err) return reject(err);
-                resolve(updatedRepository);
+                resolve(updatedSite);
             });
         });
     })
@@ -81,7 +76,7 @@ exports.patchById = (id, repositoryData) => {
 
 exports.deleteById = (id) => {
     return new Promise((resolve, reject) => {
-        Repository.deleteOne({_id: id}, (err) => {
+        Site.deleteOne({_id: id}, (err) => {
             if (err) {
                 reject(err);
             } else {
@@ -92,5 +87,5 @@ exports.deleteById = (id) => {
 };
 
 exports.findByOwnerAndName = (owner, name) => {
-    return Repository.find({owner: owner, name: name});
+    return Site.find({owner: owner, name: name});
 };

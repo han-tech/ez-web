@@ -1,24 +1,24 @@
-const RepositoryController = require('../controller/repository.controller');
+const SiteController = require('../controller/site.controller');
 
 exports.routesConfig = function (app) {
 
-    app.post('/repositories', [
-        RepositoryController.insert
+    app.post('/sites', [
+        SiteController.insert
     ]);
 
-    app.get('/repositories', [
-        RepositoryController.list
+    app.get('/sites', [
+        SiteController.list
     ]);
 
-    app.get('/repositories/:id', [
-        RepositoryController.findById
+    app.get('/sites/:id', [
+        SiteController.findById
     ]);
 
-    app.patch('/repositories/:id', [
-        RepositoryController.patchById
+    app.patch('/sites/:id', [
+        SiteController.patchById
     ]);
 
-    app.delete('/repositories/:id', [
-        RepositoryController.deleteById
+    app.delete('/sites/:id', [
+        SiteController.deleteById
     ]);
 };
