@@ -17,4 +17,24 @@ exports.routesConfig = function (app) {
    app.delete('/sites/:name', [
         SiteController.deleteByName
     ]);
+
+    app.post('/themes', [
+        ThemeController.insert
+    ]);
+
+    app.get('/themes', [
+        ThemeController.list
+    ]);
+
+    app.get('/themes/:id', [
+        ThemeController.findById
+    ]);
+
+    app.patch('/themes/:id', [
+        ThemeController.patchById
+    ]);
+
+   app.delete('/themes/:id', [
+        ThemeController.deleteById
+    ]);
 };

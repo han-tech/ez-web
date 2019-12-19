@@ -7,31 +7,32 @@ Mongoose.connect(MONGODB_URI, {useNewUrlParser: true});
 
 const Schema = Mongoose.Schema;
 
-const siteSchema = new Schema({
-    owner: String,
+const themeSchema = new Schema({
+    description: String,
     name: String,
-    siteUrl: String,
+    owner:String,
+    templateUrl: String,
     createdAt: { type: Date, default: Date.now},
     modifiedAt: { type: Date, default: Date.now},
 });
 
-siteSchema.virtual('id').get(function () {
+themeSchema.virtual('id').get(function () {
     return this._id.toHexString();
 });
 
 // Ensure virtual fields are serialised.
-siteSchema.set('toJSON', {
+themeSchema.set('toJSON', {
     virtuals: true
 });
 
-siteSchema.findById = function (cb) {
-    return this.model('Site').find({id: this.id}, cb);
+themeSchema.findById = function (cb) {
+    return this.model('Theme').find({id: this.id}, cb);
 };
 
-const Site = Mongoose.model('site', siteSchema);
+const Theme = Mongoose.model('theme', siteSchema);
 
 exports.findById = (id) => {
-    return Site.findById(id)
+    return Theme.findById(id)
         .then((result) => {
             if(result) {
                 result = result.toJSON();
@@ -42,14 +43,14 @@ exports.findById = (id) => {
         });
 };
 
-exports.create = (siteData) => {
-    const site = new Site(siteData);
-    return site.save();
+exports.create = (themeData) => {
+    const theme = new Theme(themeData);
+    return theme.save();
 };
 
 exports.list = () => {
     return new Promise((resolve, reject) => {
-        Site.find()
+        Theme.find()
             .exec(function (err, users) {
                 if (err) {
                     reject(err);
@@ -60,16 +61,16 @@ exports.list = () => {
     });
 };
 
-exports.patchById = (id, siteData) => {
+exports.patchById = (id, themeData) => {
     return new Promise((resolve, reject) => {
-        Site.findById(id, function (err, site) {
+        Theme.findById(id, function (err, theme) {
             if (err) reject(err);
-            for (let i in siteData) {
-                site[i] = siteData[i];
+            for (let i in themeData) {
+                theme[i] = themeData[i];
             }
-            site.save(function (err, updatedSite) {
+            theme.save(function (err, updatedTheme) {
                 if (err) return reject(err);
-                resolve(updatedSite);
+                resolve(updatedTheme);
             });
         });
     })
@@ -77,7 +78,7 @@ exports.patchById = (id, siteData) => {
 
 exports.deleteById = (id) => {
     return new Promise((resolve, reject) => {
-        Site.deleteOne({_id: id}, (err) => {
+        Theme.deleteOne({_id: id}, (err) => {
             if (err) {
                 reject(err);
             } else {
@@ -88,5 +89,5 @@ exports.deleteById = (id) => {
 };
 
 exports.findByOwnerAndName = (owner, name) => {
-    return Site.find({owner: owner, name: name});
+    return Theme.find({owner: owner, name: name});
 };
