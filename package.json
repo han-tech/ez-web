@@ -18,12 +18,14 @@
   },
   "homepage": "https://github.com/han-tech/ez-web.git#readme",
   "dependencies": {
+    "axios": "^0.19.0",
     "body-parser": "1.7.0",
     "express": "^4.8.7",
     "moment": "^2.17.1",
     "moment-timezone": "^0.5.13",
     "mongoose": "^5.1.1",
     "node-uuid": "^1.4.8",
+    "qs": "^6.9.1",
     "sync-request": "^4.0.2"
   }
 }

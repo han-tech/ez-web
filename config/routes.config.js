@@ -10,15 +10,11 @@ exports.routesConfig = function (app) {
         SiteController.list
     ]);
 
-    app.get('/sites/:id', [
-        SiteController.findById
+    app.get('/sites/:name', [
+        SiteController.findByName
     ]);
 
-    app.patch('/sites/:id', [
-        SiteController.patchById
-    ]);
-
-    app.delete('/sites/:id', [
-        SiteController.deleteById
+   app.delete('/sites/:name', [
+        SiteController.deleteByName
     ]);
 };

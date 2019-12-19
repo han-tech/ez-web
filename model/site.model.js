@@ -8,6 +8,7 @@ Mongoose.connect(MONGODB_URI, {useNewUrlParser: true});
 const Schema = Mongoose.Schema;
 
 const siteSchema = new Schema({
+    owner: String,
     name: String,
     siteUrl: String,
     createdAt: { type: Date, default: Date.now},
