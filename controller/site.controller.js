@@ -1,4 +1,3 @@
-const SiteModel = require('../model/site.model');
 const Config = require('../config/env.config');
 const axios = require('axios');
 

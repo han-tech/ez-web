@@ -29,7 +29,7 @@ themeSchema.findById = function (cb) {
     return this.model('Theme').find({id: this.id}, cb);
 };
 
-const Theme = Mongoose.model('theme', siteSchema);
+const Theme = Mongoose.model('theme', themeSchema);
 
 exports.findById = (id) => {
     return Theme.findById(id)
