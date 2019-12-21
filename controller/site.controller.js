@@ -9,6 +9,7 @@ const projectApiUrl = Config.projectApiUrl;
 const projectApiV2Url = Config.projectApiV2Url;
 const githubCreateRepoUrl = Config.githubCreateRepoUrl;
 const githubPushRepoUrl = Config.githubPushRepoUrl;
+const secretsApiUrl = Config.secretsApiUrl;
 
 const teamId = Config.teamId;
 const config = {
@@ -61,6 +62,48 @@ exports.insert = (req, res) => {
                         url = projectApiV2Url+'/'+project.data.name+'/link?teamId='+teamId;
                         axios.post(url, data, config)
                         .then((result)=>{
+                            url = secretsApiUrl+'/contentful_space_id?teamId='+teamId;
+                            axios.delete(url, config)
+                            .then((result)=>{
+                                url = secretsApiUrl+'/?teamId='+teamId;
+                                axios.post(url,{
+                                    name:'CONTENTFUL_SPACE_ID',
+                                    value:req.body.ContentfulSpaceId
+                                }, config)
+                                .then((result)=>{})
+                                .catch((error)=>{})
+                            })
+                            .catch((error)=>{
+                                url = secretsApiUrl+'/?teamId='+teamId;
+                                axios.post(url,{
+                                    name:'CONTENTFUL_SPACE_ID',
+                                    value:req.body.ContentfulSpaceId
+                                }, config)
+                                .then((result)=>{})
+                                .catch(()=>{})
+
+                            })
+                            url = secretsApiUrl+'/contentful_access_token?teamId='+teamId;
+                            axios.delete(url, config)
+                            .then((result)=>{
+                                url = secretsApiUrl+'/?teamId='+teamId;
+                                axios.post(url,{
+                                    name:'CONTENTFUL_ACCESS_TOKEN',
+                                    value:req.body.ContentfulAccessToken
+                                }, config)
+                                .then(()=>{})
+                                .catch((error)=>{})
+                            })
+                            .catch((error)=>{
+                                url = secretsApiUrl+'/?teamId='+teamId;
+                                axios.post(url,{
+                                    name:'CONTENTFUL_ACCESS_TOKEN',
+                                    value:req.body.ContentfulAccessToken
+                                }, config)
+                                .then(()=>{})
+                                .catch((error)=>{})
+                            })  
+
                             url = githubDeployUrl+'/?teamId='+teamId;
                             const data = {
                                 source:{
@@ -75,8 +118,11 @@ exports.insert = (req, res) => {
                             //deploy to github
                             axios.post(url, data, config)
                             .then(()=>{
-                                res.status(201).send("OK");
-                            });
+                                res.status(201).send({});
+                            })
+                            .catch((error)=>{
+                                console.log(error);
+                            })
                         });
                     });
                 });

@@ -9,6 +9,7 @@ module.exports = {
     "teamId":"team_y2WH8R3yCPynhowCRcwbpA9S",
     "githubCreateRepoUrl":"https://zeit.co/api/v1/integrations/github-create-repo",
     "githubPushRepoUrl":"https://zeit.co/api/v1/integrations/github-push-repo",
+    "secretsApiUrl":"https://api.zeit.co/v2/now/secrets",
     "installationId":589845,
     "org":"han-tech"
 };
