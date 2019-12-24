@@ -1,5 +1,5 @@
 const SiteController = require('../controller/site.controller');
-const ThemeController = require('../controller/theme.controller');
+const ThemeController = require('../controller/template.controller');
 
 exports.routesConfig = function (app) {
 

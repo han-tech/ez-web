@@ -1,15 +1,15 @@
-const ThemeModel = require('../model/theme.model');
+const TemplateModel = require('../model/template.model');
 const Config = require('../config/env.config');
 
 exports.insert = (req, res) => {
-    ThemeModel.create(req.body)
+    TemplateModel.create(req.body)
         .then((result) => {
             res.status(201).send({id: result._id});
         });
 };
 
 exports.findById = (req, res) => {
-    ThemeModel.findById(req.params.id)
+    TemplateModel.findById(req.params.id)
         .then((result) => {
             res.status(200).send(result);
         });
@@ -17,7 +17,7 @@ exports.findById = (req, res) => {
 
 exports.list = (req, res) => {
 
-    ThemeModel.list()
+    TemplateModel.list()
         .then((result) => {
             res.status(200).send(result);
         })
@@ -25,7 +25,7 @@ exports.list = (req, res) => {
 
 exports.patchById = (req, res) => {
 
-    ThemeModel.patchById(req.params.id, req.body)
+    TemplateModel.patchById(req.params.id, req.body)
         .then(() => {
             res.status(204).send({});
         });
@@ -33,7 +33,7 @@ exports.patchById = (req, res) => {
 
 exports.deleteById = (req, res) => {
 
-    ThemeModel.deleteById(req.params.id, req.body)
+    TemplateModel.deleteById(req.params.id, req.body)
         .then(() => {
             res.status(204).send({});
         });
