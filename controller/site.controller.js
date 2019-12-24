@@ -9,8 +9,12 @@ const projectApiUrl = Config.projectApiUrl;
 const projectApiV2Url = Config.projectApiV2Url;
 const githubCreateRepoUrl = Config.githubCreateRepoUrl;
 const githubPushRepoUrl = Config.githubPushRepoUrl;
-const secretsApiUrl = Config.secretsApiUrl;
-
+const Octokit = require("@octokit/rest");
+const octokit = new Octokit({
+    auth: 'c2e1f8b279fa17edf598783430dabfbfd88952e7'
+  });
+//create contentfull webhook
+const contentful = require('contentful-management');
 const teamId = Config.teamId;
 const config = {
     headers : {
@@ -18,6 +22,7 @@ const config = {
         'Authorization':'Bearer '+token
     }
 };
+
 exports.insert = (req, res) => {
     //search by name
     var url = projectApiUrl+'/list'+'?search='+req.body.name+'&teamId='+teamId;
@@ -62,48 +67,37 @@ exports.insert = (req, res) => {
                         url = projectApiV2Url+'/'+project.data.name+'/link?teamId='+teamId;
                         axios.post(url, data, config)
                         .then((result)=>{
-                            url = secretsApiUrl+'/contentful_space_id?teamId='+teamId;
-                            axios.delete(url, config)
-                            .then((result)=>{
-                                url = secretsApiUrl+'/?teamId='+teamId;
-                                axios.post(url,{
-                                    name:'CONTENTFUL_SPACE_ID',
-                                    value:req.body.ContentfulSpaceId
-                                }, config)
-                                .then((result)=>{})
-                                .catch((error)=>{})
+                            let content = "CONTENTFUL_SPACE_ID='"+req.body.ContentfulSpaceId+"'\n"+
+                            "CONTENTFUL_ACCESS_TOKEN='"+req.body.ContentfulAccessToken+"'";
+                            let buff = new Buffer(content);
+                            let base64content = buff.toString('base64');
+
+                            octokit.repos.createOrUpdateFile({
+                                owner:'han-tech',
+                                repo:req.body.newGitRepo,
+                                path:'.env.development',
+                                message:'Create .env.development file',
+                                content:base64content,
+                                branch:'master'
+                            }).then((result)=>{
+                                octokit.repos.createOrUpdateFile({
+                                    owner:'han-tech',
+                                    repo:req.body.newGitRepo,
+                                    path:'.env.production',
+                                    message:'Create .env.production file',
+                                    content:base64content,
+                                    branch:'master'
+                                }).then((result)=>{
+                                    
+                                })
+                                .catch((error)=>{
+                                    console.log(error);
+                                });  
                             })
                             .catch((error)=>{
-                                url = secretsApiUrl+'/?teamId='+teamId;
-                                axios.post(url,{
-                                    name:'CONTENTFUL_SPACE_ID',
-                                    value:req.body.ContentfulSpaceId
-                                }, config)
-                                .then((result)=>{})
-                                .catch(()=>{})
-
-                            })
-                            url = secretsApiUrl+'/contentful_access_token?teamId='+teamId;
-                            axios.delete(url, config)
-                            .then((result)=>{
-                                url = secretsApiUrl+'/?teamId='+teamId;
-                                axios.post(url,{
-                                    name:'CONTENTFUL_ACCESS_TOKEN',
-                                    value:req.body.ContentfulAccessToken
-                                }, config)
-                                .then(()=>{})
-                                .catch((error)=>{})
-                            })
-                            .catch((error)=>{
-                                url = secretsApiUrl+'/?teamId='+teamId;
-                                axios.post(url,{
-                                    name:'CONTENTFUL_ACCESS_TOKEN',
-                                    value:req.body.ContentfulAccessToken
-                                }, config)
-                                .then(()=>{})
-                                .catch((error)=>{})
-                            })  
-
+                                console.log(error);
+                            });                            
+                            
                             url = githubDeployUrl+'/?teamId='+teamId;
                             const data = {
                                 source:{
@@ -118,7 +112,32 @@ exports.insert = (req, res) => {
                             //deploy to github
                             axios.post(url, data, config)
                             .then(()=>{
-                                res.status(201).send({});
+                                //create zeit hook
+                                url = projectApiV2Url+'/'+project.data.id+'/deploy-hooks?teamId='+teamId;
+                                hook = {ref:'master',name:'build'}
+                                axios.post(url, hook, config)
+                                    .then((result)=>{
+                                        const client = contentful.createClient({
+                                          accessToken: req.body.ContentManagementApiKey
+                                        })
+                                        
+                                        // Create webhook
+                                        client.getSpace(req.body.ContentfulSpaceId)
+                                        .then((space) => space.createWebhook( {
+                                          'name': 'Zeit webhook',
+                                          'url': result.data.link.deployHooks[0].url,
+                                          'topics': [
+                                            '*.*'
+                                          ]
+                                        }))
+                                        .then((webhook) => {
+                                            res.status(201).send({});
+                                        })
+                                        .catch(console.error)                                        
+                                    })
+                                    .catch((error)=>{
+                                        console.log(error);
+                                    })
                             })
                             .catch((error)=>{
                                 console.log(error);
