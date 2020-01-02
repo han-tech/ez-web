@@ -20,16 +20,21 @@
   "dependencies": {
     "@octokit/rest": "^16.35.2",
     "axios": "^0.19.0",
+    "axios-cookiejar-support": "^0.5.1",
     "body-parser": "1.7.0",
     "contentful-management": "^5.12.0",
     "crypto": "^1.0.1",
     "express": "^4.17.1",
+    "form-data": "^3.0.0",
     "moment": "^2.17.1",
     "moment-timezone": "^0.5.13",
     "mongoose": "^5.1.1",
     "node-uuid": "^1.4.8",
+    "prismic-dom": "^2.1.0",
+    "prismic-javascript": "^2.1.5",
     "qs": "^6.9.1",
     "simple-git": "^1.129.0",
-    "sync-request": "^4.0.2"
+    "sync-request": "^4.0.2",
+    "tough-cookie": "^3.0.1"
   }
 }

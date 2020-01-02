@@ -1,10 +1,11 @@
 const ZeitService = require('../services/zeitService').ZeitService;
 const ContentfulService = require('../services/contentfulService').ContentfulService;
 const GithubService = require('../services/githubService').GithubService;
-
+const PrismicService = require('../services/prismicService').PrismicService;
 const zeitService = new ZeitService();
 const contentfulService = new ContentfulService();
 const githubService = new GithubService();
+const prismicService = new PrismicService();
 
 exports.insert = async (req, res) => {
     //search by name
@@ -25,9 +26,14 @@ exports.insert = async (req, res) => {
             await zeitService.pushRepository(req.body.template, req.body.name, repository.data.full_name);
             //link to github
             await zeitService.linkRepository(req.body.newGitRepo, req.body.name);
-            //preparing data
-            let content = "CONTENTFUL_SPACE_ID='"+req.body.ContentfulSpaceId+"'\n"+
-            "CONTENTFUL_ACCESS_TOKEN='"+req.body.ContentfulAccessToken+"'";
+            let content = '';
+            if(req.body.datatype=='contentful'){
+                //preparing data for contentfull
+                content = "CONTENTFUL_SPACE_ID='"+req.body.ContentfulSpaceId+"'\n"+
+                "CONTENTFUL_ACCESS_TOKEN='"+req.body.ContentfulAccessToken+"'";
+            } else if(req.body.datatype=='prismic'){
+                content = "PRISMIC_REPOSITORY='"+req.body.PrismicRepository+"'";
+            }
             let buff = new Buffer(content);
             let base64content = buff.toString('base64');
             //create the .env.development file
@@ -36,8 +42,13 @@ exports.insert = async (req, res) => {
             await githubService.createOrUpdateFile(req.body.newGitRepo, '.env.production', base64content, 'Create .env.production file', null);
             //create zeit hook
             const hook = await zeitService.createHook(project.data.id);
-            // Create webhook
-            await contentfulService.createWebHook(req.body.ContentManagementApiKey, req.body.ContentfulSpaceId, hook.data.link.deployHooks[0].url);
+            if(req.body.datatype=='contentful'){
+                // Create webhook
+                await contentfulService.createWebHook(req.body.ContentManagementApiKey, req.body.ContentfulSpaceId, hook.data.link.deployHooks[0].url);
+            }else if(req.body.datatype=='prismic'){
+                // Create repository
+                await prismicService.newRepository(req.body.PrismicRepository);
+            }
             
             res.status(201).send({});
         }
