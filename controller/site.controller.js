@@ -55,7 +55,7 @@ exports.insert = async (req, res) => {
         catch(error) {
             const message = {
                 isError : true,
-                message : 'There is an occurred error: "'+error.response+'".'
+                message : 'There is an occurred error: "'+error.message+'".'
             }
             res.status(500).send(message);            
         }                                        
