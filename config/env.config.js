@@ -13,7 +13,7 @@ module.exports = {
     "installationId":589845,
     "org":"han-tech",
     "gittype":"github",
-    "githubToken":"91ead67fc7f20862560a75ff6b1ad362f5f21dcf",
+    "githubToken":"d623b3fcbd818985462b532c9c44e49af59ce868",
     "prismicAuthUrl":"https://prismic.io/authentication",
     "prismicUsername":"dinhquangson@gmail.com",
     "prismicPassword":"Th@Nhb1nh"
