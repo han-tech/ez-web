@@ -1,7 +1,8 @@
 const config = require('./config/env.config.js');
 const express = require('express');
 const bodyParser = require('body-parser');
-
+// Import the axios library, to make HTTP requests
+const axios = require('axios');
 const Router = require('./config/routes.config');
 
 const app = express();
