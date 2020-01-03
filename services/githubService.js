@@ -1,14 +1,12 @@
 const Config = require('../config/env.config');
 const Octokit = require("@octokit/rest");
-const githubClientId = Config.githubClientId;
-const githubClientSecret = Config.githubClientSecret;
-const githubAppUrl = Config.githubAppUrl;
+const githubUsername = Config.githubUsername;
+const githubPassword = Config.githubPassword;
 const org = Config.org;
 const octokit = new Octokit({
-    baseUrl: githubAppUrl,
     auth: {
-      clientId: githubClientId,
-      clientSecret: githubClientSecret
+        username: githubUsername,
+        password: githubPassword
     }
 });
 
