@@ -13,7 +13,9 @@ module.exports = {
     "installationId":589845,
     "org":"han-tech",
     "gittype":"github",
-    "githubToken":"561c103217cb0c63df268ea7777e654eddfbf41d",
+    "githubClientId":"b17f919903f7f0236823",
+    "githubClientSecret":"faf0619056ad2bbc29f68bed676e1aadaed8b5a0",
+    "githubAppUrl":"https://ez-web.herokuapp.com",
     "prismicAuthUrl":"https://prismic.io/authentication",
     "prismicUsername":"dinhquangson@gmail.com",
     "prismicPassword":"Th@Nhb1nh"

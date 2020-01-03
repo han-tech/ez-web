@@ -1,4 +1,4 @@
-const config = require('./config/env.config.js');
+const Config = require('./config/env.config.js');
 const express = require('express');
 const bodyParser = require('body-parser');
 // Import the axios library, to make HTTP requests
@@ -8,8 +8,8 @@ const Router = require('./config/routes.config');
 const app = express();
 // This is the client ID and client secret that you obtained
 // while registering the application
-const clientID = 'b17f919903f7f0236823'
-const clientSecret = 'faf0619056ad2bbc29f68bed676e1aadaed8b5a0'
+const clientID = Config.githubClientId;
+const clientSecret = Config.githubClientSecret;
 
 
 // Declare the redirect route
@@ -52,5 +52,5 @@ app.use(bodyParser.json());
 Router.routesConfig(app);
 
 app.listen(config.port, function () {
-    console.log('app listening at port %s', config.port);
+    console.log('app listening at port %s', Config.port);
 });
