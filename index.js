@@ -51,6 +51,6 @@ app.use(express.static(__dirname + '/public'))
 app.use(bodyParser.json());
 Router.routesConfig(app);
 
-app.listen(config.port, function () {
+app.listen(Config.port, function () {
     console.log('app listening at port %s', Config.port);
 });
