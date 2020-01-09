@@ -15,7 +15,6 @@ module.exports = {
     "gittype":"github",
     "githubUsername":"hantech2017@gmail.com",
     "githubPassword":"Cuul0ng1",
-    "prismicAuthUrl":"https://prismic.io/authentication",
     "prismicUsername":"dinhquangson@gmail.com",
     "prismicPassword":"Th@Nhb1nh"
 };

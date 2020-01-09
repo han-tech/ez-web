@@ -32,7 +32,7 @@ exports.insert = async (req, res) => {
                 content = "CONTENTFUL_SPACE_ID='"+req.body.ContentfulSpaceId+"'\n"+
                 "CONTENTFUL_ACCESS_TOKEN='"+req.body.ContentfulAccessToken+"'";
             } else if(req.body.datatype=='prismic'){
-                content = "PRISMIC_REPOSITORY='"+req.body.PrismicRepository+"'";
+                content = "PRISMIC_REPOSITORY='"+req.body.prismicRepository+"'";
             }
             let buff = new Buffer(content);
             let base64content = buff.toString('base64');
@@ -47,7 +47,7 @@ exports.insert = async (req, res) => {
                 await contentfulService.createWebHook(req.body.ContentManagementApiKey, req.body.ContentfulSpaceId, hook.data.link.deployHooks[0].url);
             }else if(req.body.datatype=='prismic'){
                 // Create repository
-                await prismicService.newRepository(req.body.PrismicRepository);
+                await prismicService.newRepository(req.body.prismicTemplate, req.body.prismicRepository);
             }
             
             res.status(201).send({});
