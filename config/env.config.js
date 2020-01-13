@@ -14,7 +14,5 @@ module.exports = {
     "org":"han-tech",
     "gittype":"github",
     "githubUsername":"hantech2017@gmail.com",
-    "githubPassword":"Cuul0ng1",
-    "prismicUsername":"dinhquangson@gmail.com",
-    "prismicPassword":"Th@Nhb1nh"
+    "githubPassword":"Cuul0ng1"
 };

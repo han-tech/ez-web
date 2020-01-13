@@ -3,10 +3,11 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
   });
-var _assign = require('babel-runtime/core-js/object/assign');
-var _assign2 = _interopRequireDefault(_assign);
+
 var _regenerator = require('babel-runtime/regenerator');
 var _regenerator2 = _interopRequireDefault(_regenerator);
+var _authentication = require('./authentication');
+var _authentication2 = _interopRequireDefault(_authentication);
 var _login = require('./login');
 var _login2 = _interopRequireDefault(_login);
 var _config = require('./config');
@@ -15,6 +16,8 @@ var _helpers = require('./helpers');
 var _helpers2 = _interopRequireDefault(_helpers);
 var _repository = require('./repository');
 var _repository2 = _interopRequireDefault(_repository);
+var _communication = require('./communication');
+var _communication2 = _interopRequireDefault(_communication);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function login(config, args) {
@@ -103,8 +106,18 @@ function initWithTheme(config, url, args, domain) {
       }
     }, null, this, [[0, 10]]);
   }
-
-  class PrismicUtility{
+  function parseCookies (rc) {
+    var list = {};
+  
+    rc && rc.split(';').forEach(function( cookie ) {
+        var parts = cookie.split('=');
+        list[parts.shift().trim()] = decodeURI(parts.join('='));
+    });
+  
+    return list;
+  }
+  
+  class PrismicUtility{  
     async createPrismicProject(email, password, prismicTemplate, prismicProjectName) {
       let loginArgs={"--email": email, "--password": password};
       let config = await _config2.default.getAll();
@@ -112,6 +125,21 @@ function initWithTheme(config, url, args, domain) {
       let themeArgs={"--new":true,"--conf": "prismic-config.js","--noconfirm":true,"--ignoreInstall":true};
       //let config = await _config2.default.getAll();
       initWithTheme(config, prismicTemplate, themeArgs, prismicProjectName);
+    }
+    async createPrismicWebHook(username, password, prismicProjectName, webhookUrl) {
+      let args = {};
+      args['--email']=username;
+      args['--password']=password;
+      let base = 'https://'+prismicProjectName+'.prismic.io';
+      let cookies = await _authentication2.default.connect(base, args, true);
+      var c = parseCookies(cookies);
+      let session = c.X_XSRF;
+  
+      var url = base+'/app/settings/webhooks/create?_='+session;
+      var data = {
+        url: webhookUrl
+      };
+      return await _communication2.default.post(url, data, cookies);
     }
   }
   exports.PrismicUtility = PrismicUtility;
