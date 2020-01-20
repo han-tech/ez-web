@@ -14,5 +14,6 @@ module.exports = {
     "org":"han-tech",
     "gittype":"github",
     "githubUsername":"hantech2017@gmail.com",
-    "githubPassword":"Cuul0ng1"
+    "githubPassword":"Cuul0ng1",
+    "butterCMSApiUrl":"https://api.buttercms.com/v2/"
 };
