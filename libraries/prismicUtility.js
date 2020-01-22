@@ -141,17 +141,54 @@ function initWithTheme(config, url, args, domain) {
       };
       return await _communication2.default.post(url, data, cookies);
     }
-    async createPrismicContent(username, password, prismicProjectName, type, content) {
+    async createPrismicContent(username, password, prismicProjectName, type, contentType, content) {
       let args = {};
       args['--email']=username;
       args['--password']=password;
-      let base = 'https://'+prismicProjectName+'.prismic.io';
+      let base = 'https://prismic.io';
       let cookies = await _authentication2.default.connect(base, args, true);
       var c = parseCookies(cookies);
       let session = c.X_XSRF;
   
-      var url = base+'/app/documents?context=unclassified&language=en-us&_='+session;
-      var data = {"mask":{"id":"post","value":{"Blog Post":{"uid":{"type":"UID","config":{"label":"UID","placeholder":"unique-identifier-for-blog-post-url"}},"title":{"type":"StructuredText","config":{"single":"heading1","label":"Title","placeholder":"Blog Post Title..."}},"date":{"type":"Date","config":{"label":"Date"}},"body":{"type":"Slices","fieldset":"Slice zone","config":{"labels":{"image_with_caption":[{"name":"emphasized","display":"Emphasized"},{"name":"image-full-width","display":"Full"}]},"choices":{"text":{"type":"Slice","fieldset":"Text","description":"A rich text section","icon":"text_fields","non-repeat":{"text":{"type":"StructuredText","config":{"multi":"paragraph, preformatted, heading2, heading3, strong, em, hyperlink, embed, list-item, o-list-item, o-list-item","allowTargetBlank":true,"label":"Text","placeholder":"Post text..."}}},"repeat":{}},"quote":{"type":"Slice","fieldset":"Quote","description":"A quote section","icon":"format_quote","non-repeat":{"quote":{"type":"StructuredText","config":{"single":"paragraph","label":"Quote","placeholder":"Post Quote..."}}},"repeat":{}},"image_with_caption":{"type":"Slice","fieldset":"Image with Caption","description":"An image with an optional caption","icon":"image","non-repeat":{"image":{"type":"Image","config":{"constraint":{"width":1200},"thumbnails":[],"label":"Image"}},"caption":{"type":"StructuredText","config":{"single":"heading3","label":"Caption","placeholder":"Image Caption..."}}},"repeat":{}}}}}}}},"version":{"tags":[],"document":{"title":[{"type":"heading1","content":{"text":"ddddd","spans":[]}}],"uid":"ddddd","date":"2020-01-19","body":[{"key":"text$2f0c46b9-efa5-444c-a1b5-f8474c25550a","value":{"non-repeat":{"text":[{"type":"paragraph","content":{"text":"dsdfsdfsdsdfsdf","spans":[]}}]},"repeat":[{}]}}]}},"integrationFields":[]} ;
+      var url = 'https://'+prismicProjectName+'.prismic.io'+'/app/documents?context=unclassified&language=en-us&_='+session;
+      var data = {
+        "mask":{
+          "id":type,
+          "value":contentType
+        },
+        "version":{
+          "tags":[],
+          "document":content
+        },
+        "integrationFields":[]
+      } ;
+      return await _communication2.default.postJson(url, data, cookies);
+    }
+    async createAndPublishPrismicContent(username, password, prismicProjectName, type, contentType, content) {
+      let args = {};
+      args['--email']=username;
+      args['--password']=password;
+      let base = 'https://prismic.io';
+      let cookies = await _authentication2.default.connect(base, args, true);
+      var c = parseCookies(cookies);
+      let session = c.X_XSRF;
+  
+      var url = 'https://'+prismicProjectName+'.prismic.io'+'/app/documents?context=unclassified&language=en-us&_='+session;
+      var data = {
+        "mask":{
+          "id":type,
+          "value":contentType
+        },
+        "version":{
+          "tags":[],
+          "document":content
+        },
+        "integrationFields":[]
+      } ;
+      var content = await _communication2.default.postJson(url, data, cookies);
+      url = 'https://'+prismicProjectName+'.prismic.io'+'/app/documents/'
+      +content.created+'/versions/'+content.saved+'/publish?context=unclassified&language=en-us&_='+session;
+      data=null;
       return await _communication2.default.post(url, data, cookies);
     }
   }

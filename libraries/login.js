@@ -49,12 +49,12 @@ function signinWithCredentials(base, email, password) {
     function run() {
       var answersP = email && password ? _promise2.default.resolve({ email: email, password: password }) : promptCredentials(email);
       answersP.then(function (credentials) {
-        var url = base + '/authentication/signin?ml=true';
+        var url = base + '/authentication/signin';
         return _communication2.default.post(url, credentials).then(function (body) {
           var parsedToken = _helpers2.default.MagicLink.parse(body);
           if (parsedToken) _config2.default.set({ magicLink: parsedToken });
           resolve();
-        }).catch(function () {
+        }).catch(function (error) {
           _helpers2.default.UI.display('Login error, check your credentials. If you forgot your password, visit ' + base + ' to reset it.');
           run();
         });
