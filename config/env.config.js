@@ -15,5 +15,6 @@ module.exports = {
     "gittype":"github",
     "githubUsername":"hantech2017@gmail.com",
     "githubPassword":"Cuul0ng1",
-    "butterCMSApiUrl":"https://api.buttercms.com/v2/"
+    "butterCMSApiUrl":"https://api.buttercms.com/v2/",
+    "kontentApiUrl":"https://manage.kontent.ai/v2/projects/"
 };

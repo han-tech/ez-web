@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/han-tech/ez-web.git#readme",
   "dependencies": {
+    "@kentico/kontent-management": "^0.3.16",
     "@octokit/rest": "^16.35.2",
     "adm-zip": "^0.4.13",
     "axios": "^0.19.0",
@@ -54,6 +55,7 @@
     "puppeteer": "^2.0.0",
     "qs": "^6.9.1",
     "request": "^2.88.0",
+    "rxjs": "^6.5.4",
     "shelljs": "^0.8.3",
     "simple-git": "^1.129.0",
     "sync-request": "^4.0.2",
