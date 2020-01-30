@@ -1,4 +1,5 @@
 const Config = require('../config/env.config');
+var FormData = require('form-data');
 const butterCMSApiUrl = Config.butterCMSApiUrl;
 const axios = require('axios');
 class ButterCMSService{
@@ -32,15 +33,19 @@ class ButterCMSService{
         };
         return await axios.post(url, content, config);
     }
-    async createWebhook(butterCMSWriteApiKey, webhook){
-        const url = butterCMSApiUrl+'process_webbook/';
-        const config = {
-            headers : {
-                'Content-Type': 'application/json',
-                'Authorization':'Token '+butterCMSWriteApiKey
-            }
+    async createWebHook(butterCMSUsername,butterCMSPassword, webhook){
+        const url = 'https://buttercms.com/login';
+        var bodyFormData = new FormData();
+        bodyFormData.append('username', butterCMSUsername);
+        bodyFormData.append('password', butterCMSPassword);
+        const headers = {
+            'Content-Type': 'application/x-www-form-urlencoded'
         };
-        return await axios.post(url, webhook, config);
+        axios({method:'post',url:url, data:bodyFormData, headers:bodyFormData.getHeaders()}).then(result => {
+            // Handle result…
+            console.log(result.data);
+          });
+        return result;
     }
 }
 exports.ButterCMSService = ButterCMSService;
