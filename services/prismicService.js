@@ -1,4 +1,4 @@
-const PrismicUtility = require('../libraries/prismicUtility').PrismicUtility;
+const PrismicUtility = require('../prismicLibs/prismicUtility').PrismicUtility;
 const prismicUtility = new PrismicUtility();
 class PrismicService{
   async newRepository(prismicTemplate, domain, prismicUsername, prismicPassword){
