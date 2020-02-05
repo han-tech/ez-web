@@ -1,6 +1,7 @@
 const Config = require('../config/env.config');
-var FormData = require('form-data');
 const butterCMSApiUrl = Config.butterCMSApiUrl;
+const butterCMSLoginWebhookUrl = Config.butterCMSLoginWebhookUrl;
+const butterCMSWebhookUrl = Config.butterCMSWebhookUrl;
 const axios = require('axios');
 const
   path = require('path'),
@@ -80,8 +81,7 @@ class ButterCMSService{
                 throw e;
             }
             
-            var url = 'https://buttercms.com/login/?next=/webhooks/';
-            spooky.start(url);
+            spooky.start(butterCMSLoginWebhookUrl);
             spooky.then([{username: butterCMSUsername, password:butterCMSPassword, url:webhookUrl},function () {
                 this.fill('form.form-horizontal', { 
                     username: username, 
@@ -89,7 +89,7 @@ class ButterCMSService{
                 }, true);
                 this.waitFor(
                     function check() {
-                        return (this.getCurrentUrl() === 'https://buttercms.com/webhooks/');
+                        return (this.getCurrentUrl() === butterCMSWebhookUrl);
                     },
                     function then() { // step to execute when check() is ok
                         this.fill('form[method="post"]', { 

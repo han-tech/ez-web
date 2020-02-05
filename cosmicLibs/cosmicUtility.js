@@ -3,13 +3,13 @@ var request = require('request');
 var Configstore = require('configstore');
 var pkg = require('../package.json');
 var conf = new Configstore(pkg.name);
-var Cosmic = require('cosmicjs')();
+const Config = require('../config/env.config');
+const cosmicAuthUrl = Config.cosmicAuthUrl;
 var TOKEN_KEY = 'token';
 var EMAIL_KEY = 'email';
-var BUCKET_KEY = 'bucket'
 class CosmicUtility{  
     login(email, password, callback){
-        request.post({ url: 'https://api.cosmicjs.com/v1/authenticate', form: { email: email, password: password } }, function(err, httpResponse, body) {
+        request.post({ url: cosmicAuthUrl, form: { email: email, password: password } }, function(err, httpResponse, body) {
             if (err || !body) {
                 return callback('Could not authenticate')
             }
