@@ -23,5 +23,6 @@ module.exports = {
     "cosmicAuthUrl":"https://api.cosmicjs.com/v1/authenticate",
     "forestryAddSiteUrl":"https://app.forestry.io/dashboard/#/add-site",
     "forestryLoginUrl":"https://app.forestry.io/login",
-    "forestryDashboardUrl":"https://app.forestry.io/dashboard/"
+    "forestryDashboardUrl":"https://app.forestry.io/dashboard/",
+    "storyblokApiUrl":"https://mapi.storyblok.com/v1/spaces/"
 };
