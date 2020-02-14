@@ -65,6 +65,7 @@
     "simple-git": "^1.129.0",
     "slimerjs": "^1.0.0",
     "spooky": "^0.2.5",
+    "storyblok-js-client": "^2.0.12",
     "sync-request": "^4.0.2",
     "tape": "~4.9.0",
     "tape-spawn": "~1.4.2",
