@@ -58,7 +58,7 @@
     "prismic-javascript": "^2.1.5",
     "prismic.io": "^3.6.1",
     "puppeteer": "^2.0.0",
-    "qs": "^6.9.1",
+    "qs": "^6.9.7",
     "request": "^2.88.0",
     "rxjs": "^6.5.4",
     "shelljs": "^0.8.3",
